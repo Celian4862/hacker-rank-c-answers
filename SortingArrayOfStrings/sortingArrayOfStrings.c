@@ -70,30 +70,7 @@ int lexicographic_sort(const char* a, const char* b) {
 }
 
 int lexicographic_sort_reverse(const char* a, const char* b) {
-    int i, shortest = (strlen(a) > strlen(b)) ? strlen(b) : strlen(a);
-    for (i = 0; i < shortest; i++) {
-        // Compare letters
-        // If a_copy's value is higher on the ASCII table than b_copy's value, return 0
-        if (a[i] > b[i]) {
-            return 0;
-        }
-        /*
-        Cases where this would run:
-            1. If a_copy's value is lower on the ASCII table than b_copy's value, return 0
-            2. If a_copy's value is equal to b_copy's value, continue to the next iteration
-        */
-        else if (a[i] < b[i]) {
-            return 1;
-        }
-        // Continue to the next iteration
-    }
-    // Loop end
-
-    // If the loop ends, check which string was shorter. If a was shorter than b, return 1; otherwise, return 0
-    if (strlen(a) < strlen(b)) {
-        return 1;
-    }
-    return 0;
+    return lexicographic_sort(b, a);
 }
 
 int sort_by_number_of_distinct_characters(const char* a, const char* b) {
@@ -105,11 +82,11 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
     */
     int i = strlen(a), j = strlen(b), k = 0, l = 0;
     // There are only 26 letters in the alphabet, so we can use the ASCII values of 'a' and 'z' to iterate through the alphabet
-    for(int y = 'a'; y <= 'z'; y++) {
+    for (int y = 'a'; y <= 'z'; y++) {
         // Iterate through the string to find the unique characters
-        for(int x = 0; x < i; x++) {
+        for (int x = 0; x < i; x++) {
             // If the current character is equal to the current letter in the alphabet, increment k and break the loop
-            if((a[x] == (char) y)) {
+            if (a[x] == (char) y) {
                 k++;
                 break;
                 /* The first version of this code that was used had another (useless) condition and used the "and" boolean operator. However, instead of using the double ampersand (&&), it used a single ampersand (&). This makes sense because C doesn't really return the boolean values true and false but only returns 1 and 0, and binary operands can thus still work. */
@@ -120,9 +97,9 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
     
     Also, the number of unique characters won't become inaccurate because the loop will break at the first instance of that character. */
 
-    for(int y = 'a'; y <= 'z'; y++) {
-        for(int x = 0; x < j; x++) {
-            if((b[x] == (char) y)) {
+    for (int y = 'a'; y <= 'z'; y++) {
+        for (int x = 0; x < j; x++) {
+            if (b[x] == (char) y) {
                 l++;
                 break;
             }       
@@ -130,16 +107,10 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
     }
 
     // Else statements are not necessary because the function will return if a conditional statement is true, so the subsequent code will not run.
-    if (k > l) {
-        return 1;
-    }
-    if (k < l) {
-        return 0;
-    }
-    if(k == l) {
+    if (k == l) {
         return lexicographic_sort(a, b);
     }
-    return 0;
+    return k > l;
 }
 
 
