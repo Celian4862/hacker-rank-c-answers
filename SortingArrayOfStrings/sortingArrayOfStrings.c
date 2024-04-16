@@ -128,14 +128,9 @@ int sort_by_length(const char* a, const char* b) {
 
 void string_sort(char** arr,const int len,int (*cmp_func)(const char* a, const char* b)){
     int i, j, index;
-    char *temp = NULL;
     // Begin sorting
     // Condition to end loop is len - 1; otherwise, the nested loop will cause segmentation fault
     for (i = 0; i < len - 1; i++) {
-        // Reallocate memory for temp to handle the next string it will store
-        temp = (char*) realloc (temp, strlen(arr[i]) + 1);
-        // temp stores the next iteration's index
-        strcpy(temp, arr[i]);
         // Reassign index with the iteration's current index
         index = i;
         // Begin sorting iteration
@@ -143,16 +138,15 @@ void string_sort(char** arr,const int len,int (*cmp_func)(const char* a, const c
         for (j = i + 1; j < len; j++) {
             // If the comparing function returns 1, temp stores the value of j's current array index
             if ((*cmp_func)(temp, arr[j])) {
-                temp = (char*) realloc (temp, strlen(arr[j]) + 1);
-                strcpy(temp, arr[j]);
                 index = j;
             }
             // End if
         }
         // End loop
-        // After loop ends, switch the value of array index i with the value of array index index
-        strcpy(arr[index], arr[i]);
-        strcpy(arr[i], temp);
+        // After loop ends, switch the value of array index i with the value of array index index (which are pointers, so it's just switching the pointers)
+	char *temp = arr[index];
+	arr[index] = arr[i];
+	arr[i] = temp;
     }
     // End loop
     // After loop ends, sorting should be finished. Free temp.
