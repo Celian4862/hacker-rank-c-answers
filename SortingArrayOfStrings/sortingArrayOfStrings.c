@@ -73,45 +73,6 @@ int lexicographic_sort_reverse(const char* a, const char* b) {
     return lexicographic_sort(b, a);
 }
 
-int sort_by_number_of_distinct_characters(const char* a, const char* b) {
-    /* 
-    i: string length of a;
-    j: string length of b;
-    k: unique characters in a;
-    l: unique characters in b
-    */
-    int i = strlen(a), j = strlen(b), k = 0, l = 0;
-    // There are only 26 letters in the alphabet, so we can use the ASCII values of 'a' and 'z' to iterate through the alphabet
-    for (int y = 'a'; y <= 'z'; y++) {
-        // Iterate through the string to find the unique characters
-        for (int x = 0; x < i; x++) {
-            // If the current character is equal to the current letter in the alphabet, increment k and break the loop
-            if (a[x] == (char) y) {
-                k++;
-                break;
-                /* The first version of this code that was used had another (useless) condition and used the "and" boolean operator. However, instead of using the double ampersand (&&), it used a single ampersand (&). This makes sense because C doesn't really return the boolean values true and false but only returns 1 and 0, and binary operands can thus still work. */
-            }        
-        }
-    }
-    /* Note on the algorithm: if the character a[x] is equal to the current letter, e.g. 'a', then the number of unique characters will go up and the loop will break. The computer does not need to be wary of repeated characters in the string, because the conditional statement can no longer become true with repeated characters in the string, e.g. 'a', once the outer loop changes the integer y to another character, e.g. 'b'. Hence, if 'a' appears in the string again, the conditional won't be true anymore because the variable y is now 'b'.
-    
-    Also, the number of unique characters won't become inaccurate because the loop will break at the first instance of that character. */
-
-    for (int y = 'a'; y <= 'z'; y++) {
-        for (int x = 0; x < j; x++) {
-            if (b[x] == (char) y) {
-                l++;
-                break;
-            }       
-        }
-    }
-
-    // Else statements are not necessary because the function will return if a conditional statement is true, so the subsequent code will not run.
-    if (k == l) {
-        return lexicographic_sort(a, b);
-    }
-}
-
 // My original implementation
 /* int sort_by_number_of_distinct_characters(const char* a, const char* b) {
 
